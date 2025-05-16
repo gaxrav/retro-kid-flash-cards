@@ -1,73 +1,76 @@
 
-import Header from "@/components/Header";
-import CategoryGrid from "@/components/CategoryGrid";
-import FlashcardDemo from "@/components/FlashcardDemo";
-import PixelDecoration from "@/components/PixelDecoration";
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import Flashcard from "@/components/Flashcard";
+
+const historyFlashcards = [
+  {
+    question: "When was the Declaration of Independence signed?",
+    answer: "July 4, 1776"
+  },
+  {
+    question: "Who was the first President of the United States?",
+    answer: "George Washington"
+  },
+  {
+    question: "What event started World War I?",
+    answer: "The assassination of Archduke Franz Ferdinand"
+  },
+  {
+    question: "When did the Berlin Wall fall?",
+    answer: "November 9, 1989"
+  },
+  {
+    question: "Who was the first female Prime Minister of the UK?",
+    answer: "Margaret Thatcher"
+  }
+];
 
 const Index = () => {
+  const [currentCardIndex, setCurrentCardIndex] = useState(0);
+  
+  const handlePrevCard = () => {
+    setCurrentCardIndex((prev) => (prev === 0 ? historyFlashcards.length - 1 : prev - 1));
+  };
+  
+  const handleNextCard = () => {
+    setCurrentCardIndex((prev) => (prev === historyFlashcards.length - 1 ? 0 : prev + 1));
+  };
+
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
+    <div className="min-h-screen bg-retro-darkblue p-6">
+      <header className="py-4 mb-8">
+        <h1 className="font-pixel text-4xl text-retro-yellow text-center">
+          History Flashcards
+        </h1>
+      </header>
       
-      <main className="flex-1 container mx-auto px-4 py-8">
-        <div className="relative">
-          <PixelDecoration position="topRight" />
-          <PixelDecoration position="bottomLeft" />
-          
-          <section className="mb-12 text-center">
-            <h1 className="font-pixel text-4xl mb-4 text-retro-pink">
-              Learn with <span className="text-retro-yellow">Retro</span> Flashcards
-            </h1>
-            <p className="font-retro text-2xl text-white max-w-2xl mx-auto">
-              The most rad way to study and memorize everything you need to know! 
-              Flip through digital flashcards with awesome retro vibes.
-            </p>
-            <div className="mt-8 flex justify-center gap-4 flex-wrap">
-              <Button 
-                className="font-retro text-2xl bg-retro-pink text-white border-4 border-retro-black hover:bg-retro-yellow hover:text-retro-black retro-shadow"
-              >
-                Get Started
-              </Button>
-              <Button 
-                variant="outline" 
-                className="font-retro text-2xl bg-transparent text-retro-yellow border-4 border-retro-yellow hover:bg-retro-yellow hover:text-retro-black"
-              >
-                How It Works
-              </Button>
-            </div>
-          </section>
-          
-          <section className="mb-12">
-            <h2 className="font-pixel text-2xl mb-6 text-retro-teal text-center">Popular Categories</h2>
-            <CategoryGrid />
-          </section>
-          
-          <FlashcardDemo />
-          
-          <section className="bg-retro-blue border-4 border-retro-black p-6 mt-12 rounded-md retro-shadow">
-            <div className="text-center">
-              <h2 className="font-pixel text-2xl mb-4 text-white">Create Your Own Flashcards</h2>
-              <p className="font-retro text-xl text-white mb-6">
-                Make your own custom flashcards for any subject. It's totally easy and super fun!
-              </p>
-              <Button 
-                className="font-retro text-xl bg-retro-yellow text-retro-black border-4 border-retro-black hover:bg-retro-purple hover:text-white retro-shadow"
-              >
-                Create Now
-              </Button>
-            </div>
-          </section>
+      <main className="container mx-auto px-4 py-8 max-w-2xl">
+        <div className="mb-8">
+          <Flashcard 
+            question={historyFlashcards[currentCardIndex].question}
+            answer={historyFlashcards[currentCardIndex].answer}
+          />
         </div>
+        
+        <div className="flex justify-center gap-4 mt-8">
+          <button 
+            onClick={handlePrevCard}
+            className="font-retro text-xl bg-retro-blue text-white border-4 border-retro-black retro-shadow hover:bg-retro-purple px-6 py-2 rounded"
+          >
+            Previous
+          </button>
+          <button 
+            onClick={handleNextCard}
+            className="font-retro text-xl bg-retro-blue text-white border-4 border-retro-black retro-shadow hover:bg-retro-purple px-6 py-2 rounded"
+          >
+            Next
+          </button>
+        </div>
+        
+        <p className="text-center font-retro text-lg text-white mt-4">
+          Card {currentCardIndex + 1} of {historyFlashcards.length}
+        </p>
       </main>
-      
-      <footer className="bg-retro-black py-6">
-        <div className="container mx-auto px-4 text-center">
-          <p className="font-retro text-white text-lg">
-            © 2025 RetroCards - The most radical flashcard app around!
-          </p>
-        </div>
-      </footer>
     </div>
   );
 };
